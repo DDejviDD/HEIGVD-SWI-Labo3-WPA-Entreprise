@@ -54,13 +54,13 @@ Dans cette première partie, vous allez capturer une connexion WPA Entreprise au
  
 > **_Question :_** Quelle ou quelles méthode(s) d’authentification est/sont proposé(s) au client ?
 > 
-> **_Réponse :_** 
-
+> **_Réponse :_**  Parmis les trois méthodes d'authentification possible proposée au client, à savoir EAP-TLS, EAP-TTLS, EAP-PEAP,  l'AP nous propose EAP-TLS et EAP-PEAP.
+> ![alt](img/part1_q1_2.png)
 ---
 
 > **_Question:_** Quelle méthode d’authentification est utilisée ?
 > 
-> **_Réponse:_** 
+> **_Réponse:_** C'est la méthode EAP-PEAP qui a été sélectionnée par le client. 
 
 ---
 
@@ -68,11 +68,12 @@ Dans cette première partie, vous allez capturer une connexion WPA Entreprise au
 > 
 > - Le serveur envoie-t-il un certificat au client ? Pourquoi oui ou non ?
 > 
-> **_Réponse:_**
+> **_Réponse:_** Oui, le serveur doit s'authentifier auprès du client afin d'éviter certaines attaques comme par exemple la fameuse attaque de l'homme dans le milieu.
 > 
+> ![alt](img/part1_q3_1.png)
 > - b.	Le client envoie-t-il un certificat au serveur ? Pourquoi oui ou non ?
 > 
-> **_Réponse:_**
+> **_Réponse:_** Non, car le protocole utilisé pour l'authentification est EAP-PEAP et non EAP-TLS. L'authentification se deroule donc avec un challenge (MS-CHAP).
 > 
 
 ---
@@ -98,20 +99,38 @@ Pour implémenter l’attaque :
 > **_Question :_** Quelles modifications sont nécessaires dans la configuration de hostapd-wpe pour cette attaque ?
 > 
 > **_Réponse :_** 
+> Les modifications porte sur l'interface utilisée, le SSID, et le channel.
+> ![alt](img/part2_q1_1.png)
+> 
+> ![alt](img/part2_q1_2.png)
 
 ---
 
 > **_Question:_** Quel type de hash doit-on indiquer à john pour craquer le handshake ?
 > 
 > **_Réponse:_** 
+> Pour attaquer le hash capturé nous avons utilisé un autre outil que john, spécialement conçu pour casser les mots de passe WPA-Enterprise faible :  **asleap**
+> 
+> Nous lui avons donné le challenge et la réponse capturés ainsi qu'un dictionnaire de mot de passe (rockyou un grand dictionnaire de password simple se trouvant sur Kali).
+> ![alt](img/part2_q2_1.png)
+> L'outil nous a bien retourner le password **welcome** qui était celui utilisé pour nous authentifié.
 
 ---
 
 > **_Question:_** 6.	Quelles méthodes d’authentification sont supportées par hostapd-wpe ?
 > 
 > **_Réponse:_**
-
-
+> 
+> 1. EAP-FAST/MSCHAPv2 (Phase 0)
+> 2. PEAP/MSCHAPv2
+> 3. EAP-TTLS/MSCHAPv2
+> 4. EAP-TTLS/MSCHAP
+> 5. EAP-TTLS/CHAP
+> 6. EAP-TTLS/PAP
+>
+>
+>
+> - [lien vers la source](https://tools.kali.org/wireless-attacks/hostapd-wpe)
 ## Quelques éléments à considérer :
 
 - Solution à l’erreur éventuelle « ```Could not configure driver mode``` » :
